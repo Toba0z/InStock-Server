@@ -1,34 +1,56 @@
 const express = require('express')
-const { addListener } = require('nodemon')
 const router = express.Router()
-const warehouse = require('./routes')
 
 
 //Tentative endpoint denomination
 
-//get warehouse list
-
-//get inventory items list
-
-
-//get one warehouse information
-
-//get one inventory item information
-
-
-//get all the list inventory for one warehouse
-
-
+//get warehouse list (7warehouse)
+router.route('/')
+  .get(async (req, res) =>  {
+    try {
+        res.json('Testing')
+    } catch (error) {
+        console.log('This is the error:', error)
+    }
+  })
 //post create a new warehouse
+.post(async (req, res) =>  {
+    try {
+        
+    } catch (error) {
+        console.log('This is the error:', error)
+    }
+  })
 
 
-//post create a new item
-
+router.route('/:id')
+//get one warehouse information and at the same time get all (probably the 8 first) the list inventory for one warehouse
+.get(async (req, res) =>  {
+    try {
+        
+    } catch (error) {
+        console.log('This is the error:', error)
+    }
+  })
 
 //put update a warehouse
 
-//put update an inventory item
+.put(async (req, res) =>  {
+    try {
+        
+    } catch (error) {
+        console.log('This is the error:', error)
+    }
+  })
 
 // delete a warehouse
 
-//delete an inventory item
+.delete(async (req, res) =>  {
+    try {
+        
+    } catch (error) {
+        console.log('This is the error:', error)
+    }
+  })
+
+module.exports = router
