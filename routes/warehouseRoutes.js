@@ -45,8 +45,9 @@ router.route('/:id/inventories')
 .get(async (req, res) =>  {
     try {
 
-        const idCheck = await knex('warehouses').select().where()
-        if (req.params.id === undefined ) {
+        const idCheck = await knex('warehouses').pluck('id')
+         console.log(idCheck)
+        if (idCheck.includes(parseInt(req.params.id)) == false) {
             res.status(404).json('Not found the Warehouse')
         } else {
          const warehouseInventoryItems = await knex('inventories')
