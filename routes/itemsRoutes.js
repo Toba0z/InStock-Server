@@ -1,13 +1,15 @@
 const express = require('express')
 const router = express.Router()
-
+const knex = require('knex')(require('../knexfile'))
 
 
 router.route('/')
 //get inventory items list (the first 8 items)
   .get(async (req, res) =>  {
     try {
-        
+       const inventory = await knex('inventories').select('*').limit(8)
+       res.json(inventory)
+    console.log(inventory)
     } catch (error) {
         console.log('This is the error:', error)
     }

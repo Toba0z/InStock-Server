@@ -12,6 +12,6 @@ app.use(express.json())
 app.use(cors())
 
 
-app.use('/warehouse', warehouse)
+app.use('/warehouses', warehouse)
 app.use('/items', inventoryItems)
 app.listen(PORT)
