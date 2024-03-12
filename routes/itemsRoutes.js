@@ -4,7 +4,7 @@ const router = express.Router()
 
 
 router.route('/')
-//get inventory items list (8items)
+//get inventory items list (the first 8 items)
   .get(async (req, res) =>  {
     try {
         

@@ -4,7 +4,7 @@ const router = express.Router()
 
 //Tentative endpoint denomination
 
-//get warehouse list (7warehouse)
+//get warehouse list (the first 7 warehouse)
 router.route('/')
   .get(async (req, res) =>  {
     try {
