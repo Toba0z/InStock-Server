@@ -40,9 +40,30 @@ router.route('/')
     }
   })
 
+router.route('/:id/inventories')
+// get the list of ALL inventory for a particular warehouse
+.get(async (req, res) =>  {
+    try {
+
+        const idCheck = await knex('warehouses').select().where()
+        if (req.params.id === undefined ) {
+            res.status(404).json('Not found the Warehouse')
+        } else {
+         const warehouseInventoryItems = await knex('inventories')
+        .join('warehouses', 'inventories.warehouse_id', '=', 'warehouses.id')
+        .select('inventories.item_name', 'inventories.category', 'inventories.status', 'inventories.quantity','warehouses.warehouse_name')
+        .where('warehouses.id', '=', parseInt(req.params.id))
+        console.log(warehouseInventoryItems)
+        res.json(warehouseInventoryItems)
+        }
+    } catch (error) {
+        console.log('This is the error:', error)
+    }
+  })
+
 
 router.route('/:id')
-//get one warehouse information and at the same time get all (probably the 8 first) the list inventory for one warehouse
+//get one warehouse information based in the id
 .get(async (req, res) =>  {
     try {
         
@@ -50,6 +71,8 @@ router.route('/:id')
         console.log('This is the error:', error)
     }
   })
+
+
 
 //put update a warehouse
 

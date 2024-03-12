@@ -8,7 +8,7 @@ exports.up = function (knex) {
     table
       .integer('warehouse_id')
       .unsigned()
-      .references('warehouses.id')
+      .references('warehouses.id') //This establishes a foreign key relationship between the warehouse_id column in the current table and the id column of the warehouses table.
       .onUpdate('CASCADE')
       .onDelete('CASCADE');
     table.string('item_name').notNullable();
