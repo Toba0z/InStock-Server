@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 require('dotenv').config()
 const cors = require('cors')
-const {PORT} = process.env
+const {PORT} = process.env 
 const warehouse = require('./routes/warehouseRoutes.js')
 const inventoryItems = require('./routes/itemsRoutes.js')
 
