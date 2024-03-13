@@ -43,8 +43,8 @@ router.route('/:id')
       const idCheck = await knex('inventories').pluck('id')
       const warehouseidCheck = await knex('inventories').pluck('warehouse_id')
             console.log(idCheck)
-      if (req.body.item_name === null || req.body.description === null ||
-          req.body.category === null || req.body.status === null || req.body.quantity === null 
+      if (!req.body.item_name || !req.body.description ||
+          !req.body.category || !req.body.status || req.body.quantity == null 
           ) {
            
            res.status(400).send('Missing properties on the request body')
