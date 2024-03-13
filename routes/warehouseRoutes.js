@@ -31,6 +31,8 @@ router.route('/')
             res.status(400).send('Invalid email or phone number')
         }
         else  {
+            const idAmount = await knex('warehouses').pluck('id')
+            req.body.id = idAmount.length  //Pendent to test this one
             console.log(req.body)
             await knex('warehouses').insert(req.body)
             res.status(200).json(req.body)

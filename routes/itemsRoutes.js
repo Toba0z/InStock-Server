@@ -7,7 +7,7 @@ router.route('/')
 //get inventory items list (the first 8 items)
   .get(async (req, res) =>  {
     try {
-       const inventory = await knex('inventories').select('*').limit(8)
+       const inventory = await knex('inventories').select('*')
        res.json(inventory)
     console.log(inventory)
     } catch (error) {
