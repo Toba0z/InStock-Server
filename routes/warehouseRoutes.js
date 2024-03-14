@@ -1,6 +1,9 @@
 const express = require("express");
+const { Knex } = require("knex");
 const router = express.Router();
+const { body, validationResult } = require('express-validator');
 const knex = require("knex")(require("../knexfile"));
+
 
 //Tentative endpoint denomination
 
@@ -38,8 +41,6 @@ router
             await knex('warehouses').insert(req.body)
             res.status(200).json(req.body)
         }
-
-      const checkForLetter = "@";
       if (
         req.body.warehouse_name == null ||
         req.body.address == null ||
@@ -112,18 +113,44 @@ router
       res.status(500).json({ error: "Internal server error" });
     }
   })
-
   
-  //put update a warehouse
-  .put(async (req, res) => {
+  // Back-End: API to PUT/EDIT a Warehouse   ==========Toba ===========
+  const warehouseValidator = [
+    body('warehouse_name').notEmpty().withMessage('Warehouse name is required'),
+    body('address').notEmpty().withMessage('Address is required'),
+    body('city').notEmpty().withMessage('City is required'),
+    body('country').notEmpty().withMessage('Country is required'),
+    body('contact_name').notEmpty().withMessage('Contact name is required'),
+    body('contact_position').notEmpty().withMessage('Contact position is required'),
+    body('contact_phone').notEmpty().matches(/\+?[1-9]\d{1,14}$/).withMessage('Invalid phone number'),
+    body('contact_email').notEmpty().isEmail().withMessage('Invalid email address'),
+  ];
+  router.route("/:id")
+  .put(warehouseValidator, async (req, res) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+      return res.status(400).json({errors: errors.array()});
+    }
+    const {id} = req.params;
+    const updateData = req.body;
     try {
+      const updated = await knex('warehouses')
+      .where({id})
+      .update(updateData)
+      .returning('*');
+      if(updateData.length === 0){
+        return res.status(404).json({message:  'Warehouse ID not found'});
+      }
+      res.status(200).json(updated[0]);
     } catch (error) {
-      console.log("This is the error:", error);
+      res.status(500).json({message: 'Internal server error', error: error.message});
+      console.error("This is the error:", error);
     }
   })
 
-  // delete a warehouse
 
+
+  // delete a warehouse
   .delete(async (req, res) => {
     try {
       await knex("warehouses").where("id", req.params.id).del();
