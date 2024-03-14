@@ -9,7 +9,7 @@ router
     try {
       const inventory = await knex("inventories").select("*")
       res.json(inventory)
-      console.log(inventory)
+      
     } catch (error) {
       console.log("This is the error:", error)
     }
@@ -32,15 +32,6 @@ router
   })
 
 
-router
-  .route("/:id")
-  //get one inventory item information
-  .get(async (req, res) => {
-    try {
-    } catch (error) {
-      console.log("This is the error:", error)
-    }})
- 
 router.route('/:id')
 //get one inventory item information 
 .get(async (req, res) =>  {
@@ -64,18 +55,17 @@ router.route('/:id')
     try {
       const idCheck = await knex("inventories").pluck("id")
       const warehouseidCheck = await knex("inventories").pluck("warehouse_id")
-      console.log(idCheck)
+      
       if (!req.body.item_name || !req.body.description || !req.body.category || !req.body.status || req.body.quantity == null) {
         res.status(400).send("Missing properties on the request body")
       } else if (warehouseidCheck.includes(parseInt(req.body.warehouse_id)) == false) {
         res.status(400).send("Warehouse id not found")
-        console.log(56)
+        
       } else if (idCheck.includes(parseInt(req.params.id)) == false) {
         res.status(404).json("Not found the Item")
       } else if (!Number.isFinite(req.body.quantity)) {
         res.status(400).send("You need to add a number in quantity field")
       } else {
-        console.log(typeof req.body.quantity)
         await knex("inventories").where("id", req.params.id).update(req.body)
         res.status(200).json(req.body)
       }
