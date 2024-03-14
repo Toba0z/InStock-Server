@@ -39,29 +39,29 @@ router
             res.status(200).json(req.body)
         }
 
-      const checkForLetter = "@";
-      if (
-        req.body.warehouse_name == null ||
-        req.body.address == null ||
-        req.body.city == null ||
-        req.body.country == null ||
-        req.body.contact_name == null ||
-        req.body.contact_position == null ||
-        req.body.contact_phone == null ||
-        req.body.contact_email == null
-      ) {
-        res.status(400).send("Missing properties on the request body");
-      } else if (
-        req.body.contact_phone.length !== 17 ||
-        req.body.contact_email.includes(checkForLetter) === false
-      ) {
-        console.log(req.body.contact_phone.length);
-        res.status(400).send("Invalid email or phone number");
-      } else {
-        console.log(req.body);
-        await knex("warehouses").insert(req.body);
-        res.status(200).json(req.body);
-      }
+      // const checkForLetter = "@";
+      // if (
+      //   req.body.warehouse_name == null ||
+      //   req.body.address == null ||
+      //   req.body.city == null ||
+      //   req.body.country == null ||
+      //   req.body.contact_name == null ||
+      //   req.body.contact_position == null ||
+      //   req.body.contact_phone == null ||
+      //   req.body.contact_email == null
+      // ) {
+      //   res.status(400).send("Missing properties on the request body");
+      // } else if (
+      //   req.body.contact_phone.length !== 17 ||
+      //   req.body.contact_email.includes(checkForLetter) === false
+      // ) {
+      //   console.log(req.body.contact_phone.length);
+      //   res.status(400).send("Invalid email or phone number");
+      // } else {
+      //   console.log(req.body);
+      //   await knex("warehouses").insert(req.body);
+      //   res.status(200).json(req.body);
+      // }
 
     } catch (error) {
       console.log("This is the error:", error);
