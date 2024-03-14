@@ -116,14 +116,14 @@ router
   
   // Back-End: API to PUT/EDIT a Warehouse   ==========Toba ===========
   const warehouseValidator = [
-    body('warehouse_name').notEmpty().withMessage('Warehouse name is required'),
-    body('address').notEmpty().withMessage('Address is required'),
-    body('city').notEmpty().withMessage('City is required'),
-    body('country').notEmpty().withMessage('Country is required'),
-    body('contact_name').notEmpty().withMessage('Contact name is required'),
-    body('contact_position').notEmpty().withMessage('Contact position is required'),
-    body('contact_phone').notEmpty().matches(/\+?[1-9]\d{1,14}$/).withMessage('Invalid phone number'),
-    body('contact_email').notEmpty().isEmail().withMessage('Invalid email address'),
+    body('warehouse_name').notEmpty().withMessage('Warehouse name is required').trim(),
+    body('address').notEmpty().withMessage('Address is required').trim(),
+    body('city').notEmpty().withMessage('City is required').trim(),
+    body('country').notEmpty().withMessage('Country is required').trim(),
+    body('contact_name').notEmpty().withMessage('Contact name is required').trim(),
+    body('contact_position').notEmpty().withMessage('Contact position is required').trim(),
+    body('contact_phone').notEmpty().matches(/\+?[1-9]\d{1,14}$/).withMessage('Invalid phone number').trim(),
+    body('contact_email').notEmpty().isEmail().withMessage('Invalid email address').trim(),
   ];
   router.route("/:id")
   .put(warehouseValidator, async (req, res) => {
@@ -147,7 +147,6 @@ router
       console.error("This is the error:", error);
     }
   })
-
 
 
   // delete a warehouse
