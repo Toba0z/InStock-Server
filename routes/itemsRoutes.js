@@ -29,10 +29,16 @@ router.route('/')
 router.route('/:id')
 //get one inventory item information 
 .get(async (req, res) =>  {
-    try {
+    try { const id =req.params.id;
+    const item = await knex("inventories").where({id:id}).first();
+    if(!item){
+      return res.status(404).json({error: "Item not found"})
+    }
+    res.status(200).json(item);
         
     } catch (error) {
         console.log('This is the error:', error)
+        res.status(500).json({ error: "Internal server error" });
     }
   })
 
