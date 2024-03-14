@@ -12,4 +12,4 @@ app.use(cors())
 app.use("/warehouses", warehouse)
 app.use("/items", inventoryItems)
 app.listen(PORT)
-console.log("port", PORT)
+
