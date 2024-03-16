@@ -20,7 +20,7 @@ router
   .post(async (req, res) => {
     try {
       const { item_name, description, category, status, quantity, warehouse_id } = req.body
-      if (!warehouse_id || !item_name || !description || !category || !status || !quantity) {
+      if (!warehouse_id || !item_name || !description || !category || !status || quantity == null) {
         res.status(400).send("Missing properties on the request body")
       } else {
         await knex("inventories").insert(req.body)
