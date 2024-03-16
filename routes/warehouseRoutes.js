@@ -28,7 +28,7 @@ router
       const checkForLetter = "@";
       if (!warehouse_name || !address || !city || !country || !contact_name || !contact_position || !contact_phone || !contact_email) {
         res.status(400).send("Missing properties on the request body")
-      } else if (String(contact_phone).length !== 17 || contact_email.includes(checkForLetter) == false) {
+      } else if (String(contact_phone).length !== 10 || contact_email.includes(checkForLetter) == false) {
         res.status(400).send("Invalid email or phone number")  }
         else  {
             await knex('warehouses').insert(req.body)
