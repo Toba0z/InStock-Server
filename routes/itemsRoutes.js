@@ -4,30 +4,31 @@ const knex = require("knex")(require("../knexfile"))
 
 router
   .route("/")
-  //get inventory items list (the first 8 items)
+  //get inventory items list 
   .get(async (req, res) => {
     try {
       const inventory = await knex("inventories").select("*")
       res.json(inventory)
       
     } catch (error) {
-      console.log("This is the error:", error)
+      console.log("Error in Get Inventory Items List:", error)
+      res.status(500).json({ error: "Internal server error" });
     }
   })
 
   //post create a new item
   .post(async (req, res) => {
     try {
-      if (!req.body.warehouse_id || !req.body.item_name || !req.body.description || !req.body.category || !req.body.status || !req.body.quantity) {
+      const { item_name, description, category, status, quantity, warehouse_id } = req.body
+      if (!warehouse_id || !item_name || !description || !category || !status || quantity == null) {
         res.status(400).send("Missing properties on the request body")
       } else {
-        const idAmount = await knex("inventories").pluck("id")
-        req.body.id = idAmount.length + 1
         await knex("inventories").insert(req.body)
         res.status(200).json(req.body)
       }
     } catch (error) {
-      console.log("This is the error:", error)
+      console.log("Error in post/create a new item:", error)
+      res.status(500).json({ error: "Internal server error" });
     }
   })
 
@@ -43,7 +44,7 @@ router.route('/:id')
     res.status(200).json(item);
         
     } catch (error) {
-        console.log('This is the error:', error)
+        console.log('Error in get one inventory item information:', error)
         res.status(500).json({ error: "Internal server error" });
 
     }
@@ -55,22 +56,24 @@ router.route('/:id')
     try {
       const idCheck = await knex("inventories").pluck("id")
       const warehouseidCheck = await knex("inventories").pluck("warehouse_id")
-      
-      if (!req.body.item_name || !req.body.description || !req.body.category || !req.body.status || req.body.quantity == null) {
+      const { item_name, description, category, status, quantity, warehouse_id } = req.body
+      const {id} = req.params
+      if (!item_name || !description || !category || !status || quantity == null) {
         res.status(400).send("Missing properties on the request body")
-      } else if (warehouseidCheck.includes(parseInt(req.body.warehouse_id)) == false) {
+      } else if (warehouseidCheck.includes(parseInt(warehouse_id)) == false) {
         res.status(400).send("Warehouse id not found")
         
-      } else if (idCheck.includes(parseInt(req.params.id)) == false) {
+      } else if (idCheck.includes(parseInt(id)) == false) {
         res.status(404).json("Not found the Item")
-      } else if (!Number.isFinite(req.body.quantity)) {
+      } else if (!Number.isFinite(quantity)) {
         res.status(400).send("You need to add a number in quantity field")
       } else {
-        await knex("inventories").where("id", req.params.id).update(req.body)
+        await knex("inventories").where("id", id).update(req.body)
         res.status(200).json(req.body)
       }
     } catch (error) {
-      console.log("This is the error:", error)
+      console.log("Error on edit/update inventory item:", error)
+      res.status(500).json({ error: "Internal server error" });
     }
   })
 
@@ -79,9 +82,10 @@ router.route('/:id')
   .delete(async (req, res) => {
     try {
       await knex("inventories").where("id", req.params.id).del()
-      res.json(`Inventories ${req.params.id} eliminated`)
+      res.json(`Inventories ${req.params.id} deleted`)
     } catch (error) {
-      console.log("This is the error:", error)
+      console.log("Error on delete an inventory item", error)
+      res.status(500).json({ error: "Internal server error" });
     }
   })
 
