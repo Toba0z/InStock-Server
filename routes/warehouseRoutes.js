@@ -28,7 +28,7 @@ router
       const checkForLetter = "@";
       if (!warehouse_name || !address || !city || !country || !contact_name || !contact_position || !contact_phone || !contact_email) {
         res.status(400).send("Missing properties on the request body")
-      } else if (String(contact_phone).length !== 10 || contact_email.includes(checkForLetter) == false) {
+      } else if (String(contact_phone).length < 10 || String(contact_phone).length > 25 || contact_email.includes(checkForLetter) == false) {
         res.status(400).send("Invalid email or phone number")  }
         else  {
             await knex('warehouses').insert(req.body)
@@ -54,6 +54,7 @@ router
         const warehouseInventoryItems = await knex("inventories")
         .join("warehouses", "inventories.warehouse_id", "=", "warehouses.id")
         .select(
+          "inventories.id",
           "inventories.item_name", 
           "inventories.category", 
           "inventories.status", 
