@@ -47,7 +47,12 @@ router.route('/:id')
 //get one inventory item information 
 .get(async (req, res) =>  {
     try { const id =req.params.id;
-    const item = await knex("inventories").where({id:id}).first();
+    const item = await knex("inventories")
+    .join("warehouses", "inventories.warehouse_id", "=", "warehouses.id")
+    .select("inventories.*", "warehouses.warehouse_name") 
+    .where("inventories.id", id)
+    .first();
+    
     if(!item){
       return res.status(404).json({error: "Item not found"})
     }
