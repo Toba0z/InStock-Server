@@ -7,7 +7,17 @@ router
   //get inventory items list 
   .get(async (req, res) => {
     try {
-      const inventory = await knex("inventories").select("*")
+      const inventory = await knex("inventories")
+      .join("warehouses", "inventories.warehouse_id", "=", "warehouses.id")
+        .select(
+          "inventories.id",
+          "inventories.item_name", 
+          "inventories.category", 
+          "inventories.status", 
+          "inventories.description",
+          "inventories.quantity", 
+          "warehouses.warehouse_name"
+        )
       res.json(inventory)
       
     } catch (error) {
